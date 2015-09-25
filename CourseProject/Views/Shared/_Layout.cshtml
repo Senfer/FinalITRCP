@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title – приложение ASP.NET</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+</head>
+<body style="background-color:rgba(154, 154, 154, 0.24)">
+    <div class="navbar navbar-inverse navbar-fixed-top" style="font-family:'Segoe UI'; font-weight:lighter; color:white; font-size:24px">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("НАЧАЛЬНАЯ страница", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", @style = "backgorund-color:#87ff00; color:white; font-size:24px; display: inline-block" })
+            </div>
+
+            <div class="navbar-collapse collapse" style="text-align:right">
+<<<<<<< HEAD
+                @if (Request.Cookies["Nickname"] != null && Request.IsAuthenticated)
+                {
+                    <a href="#" id="Nickname" name="Nickname" data-type="text" data-send="always" class="editable editable-click editable-open" data-url="/Home/ChangeNickname" title=""
+                       style="display:inline-block; vertical-align:middle">
+                        @Request.Cookies["Nickname"].Value
+                    </a>
+                }
+                @if(Request.IsAuthenticated)
+                { 
+                <div style="display:inline-block; vertical-align:middle">
+                    <form action="/Home/FullTable">
+                        <input type="text" class="layout-input" name="SearchString" id="SearchString">
+                        <input type="hidden" name="search" id="search" value="true">
+                        <button type="submit" class="btn LayoutButton">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true" style="color:white">
+                            </span>
+                        </button>
+                    </form>
+                </div>
+                }
+                
+=======
+                <a href="#" id="Nickname" name="Nickname" data-type="text" data-send="always" class="editable editable-click editable-open" data-url="Home/ChangeNickname" title="" style="display:inline-block; vertical-align:middle">@Request.Cookies["Nickname"].Value</a>
+>>>>>>> origin/master
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year – приложение ASP.NET</p>
+        </footer>
+    </div>
+
+   
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+<link href="/Content/Site.css" rel="stylesheet">
+<link href="/Content/bootstrap-editable.css" rel="stylesheet">
+<script src="~/Scripts/bootstrap-editable.js"></script>
+<script>
+    $.fn.editable.defaults.mode = 'inline';
+
+    $(document).ready(function () {
+       $('#Nickname').editable();
+    });
+
+</script>

@@ -1,0 +1,535 @@
+﻿<!DOCTYPE html>
+@{
+    ViewBag.Title = "ADDING tasks";
+}
+<style>
+    .block {
+        height: 700px;
+        background-color: lightgray;
+        margin-top: 30px;
+        margin-left:0px;
+        margin-right:0px;
+        box-shadow: 30px 30px 25px rgba(4, 4, 4, 0.3);
+        display: inline-block;
+        vertical-align: top;
+        text-align: left;
+        word-break:break-all;
+    }
+
+    .block-header {
+        position: inherit;
+        height: auto;
+        width: auto;
+        top: 0px;
+        left: 0px;
+        text-align:left;
+        background-color: #7be068;
+    }
+
+    .block-header-text {
+        font-size: 25px;
+        font-family: 'Segoe UI';
+        font-weight: lighter;
+        color: white;
+        padding: 9px;
+        margin-bottom: 2px;
+        background-color: #7be068;
+        display:inline-block;
+        word-break:break-all;
+    }
+
+    .block-header-btn {
+        font-size:20px; 
+        display:inline-block; 
+        padding-top:15px; 
+        margin:0px; 
+        right:0px; 
+        background-color:#7be068; 
+        color:white; 
+        vertical-align:middle;
+        border-radius:0px;
+        border:0px;
+        border-left:2px solid lightgray;
+        border-right:2px solid lightgray;
+    }
+
+    .block-table-text {
+        font-size: medium;
+        font-family: 'Segoe UI';
+        font-weight: lighter;
+        color: gray;
+        margin: 0px;
+        padding: 5px;
+    }
+
+    .glyphicon.glyphicon-one-fine-dot:before {
+        content: "\25cf";
+        font-size: 35px;
+        margin-bottom: 0px;
+        padding: 0px;
+    }
+
+    .tag {
+        padding:4px;
+        margin:3px;    
+        height:auto;
+        background-color:#688ffa;
+        color:white;
+        display:inline-block;
+    }
+    .btn-tag {
+        padding:0px;
+        margin:0px;
+        margin-left:2px;
+        background-color:#688ffa;
+        display:inline-block;
+    }
+
+    .answer {
+        padding:4px;
+        margin:3px;    
+        height:auto;
+        background-color:#7be068;
+        color:white;
+        display:inline-block;
+    }
+    .btn-answer {
+        padding:0px;
+        margin:0px;
+        margin-left:2px;
+        background-color:#7be068;
+        display:inline-block;
+    }
+
+    [type=file] {
+        position: absolute;
+        filter: alpha(opacity=0);
+        opacity: 0;
+    }
+
+        input,
+        [type=file] + label {
+            text-align: left;
+            width: auto;
+            left: 0;
+            
+        }
+
+        [type=file] + label {
+            text-align: center;
+            /* Decorative */
+            background: #7be068;
+            color: white;
+        }
+
+    #dropZone {
+        color: #555;
+        font-size: 18px;
+        text-align: center;
+        width: auto;
+        padding: 50px 0;
+        margin:2px;
+        background: #eee;
+        border: 1px solid #ccc;
+        border-radius: 0px;
+    }
+
+    .navbar-fixed-top {
+        background-color: #7be068;
+        box-shadow: 0px 10px 25px rgba(4, 4, 4, 0.3);
+    }
+
+    .LayoutButton {
+        background-color:#7be068;
+    }
+        .layout-input {
+    background-color:#70bd62;  
+}
+</style>
+
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddingTask</title>
+</head>
+
+<div style="text-align:center">
+    <div style="width:15%; display:inline-block;margin:0px; padding:0px; vertical-align:top; border-right:2px solid gray">
+
+        
+
+        <div class="block" style="width:100%; height:auto">
+            <div class="block-header" style="text-align:left">
+                <p class="block-header-text" style="font-size:large; vertical-align:middle">CATEGORY</p>
+            </div>
+            <div style="height:auto;padding:2px">
+                <div style="background: #eee;height:100%">
+                    <form id="Category" class="block-table-text" style="padding:2px; color:gray;">
+                        <div class="radio" style="margin-top:0px">
+                            <label><input name="category" type="radio" value="C#" checked>C#</label>
+                        </div>
+                        <div class="radio">
+                            <label><input name="category" type="radio" value="ruby">RUBY</label>
+                        </div>
+                        <div class="radio">
+                            <label><input name="category" type="radio" value="python">PYTHON</label>
+                        </div>
+                        <div class="radio" style="margin-bottom:0px">
+                            <label><input name="category" type="radio" value="JAVA">JAVA</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="block" style="width:100%; height:auto; text-align:center">
+            <div class="block-header" style="text-align:left">
+                <p class="block-header-text" style="font-size: large; vertical-align:middle; margin:0px">TAGS</p>
+                <div data-alerts="alerts" data-ids="myid" data-fade="2000" style="position:fixed; width:540px; top:10%; left:10%; margin:4px; padding:0px"></div>
+                <button type="button" class="btn block-header-btn" style="height:100%; margin-bottom:0px; margin-top:0px; padding:0.5em;font-size:20px; height:40px; width:40px;vertical-align:middle" id="AddTag">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true" style="color:white">
+                    </span>
+                </button>
+            </div>
+            <input id="TagInput" type="text" style="max-width:98%; width:98%; display:inline; margin:2px; align-self:center" placeholder="Enter TAGS here">
+            <div id="NewTags">
+            </div>
+        </div>
+
+        <div class="block" style="width:100%; height:auto">
+            <div class="block-header" style="text-align:left">
+                <p class="block-header-text" style="font-size:large; vertical-align:middle">DIFFICULTY</p>
+            </div>
+            <div style="height:auto;padding:2px">
+                <div style="background: #eee;height:100%">
+                    <form id="Difficulty" class="block-table-text" style="padding:2px; color:gray;">
+                        <div class="radio" style="margin-top:0px">
+                            <label><input name="difficulty" type="radio" value="EASY" checked>EASY</label>
+                        </div>
+                        <div class="radio">
+                            <label><input name="difficulty" type="radio" value="MEDIUM">MEDIUM</label>
+                        </div>
+                        <div class="radio" style="margin-bottom:0px">
+                            <label><input name="difficulty" type="radio" value="HARD">HARD</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="block" style="width:100%; height:auto">
+            <div class="block-header" style="text-align:left">
+                <p class="block-header-text" style="font-size: large; vertical-align:middle; margin:0px">FILES</p>
+                <form style="display:inline-block; height:100%">
+                    <input name="file" type="file" class="cloudinary-fileupload" data-cloudinary-field="image_id" id="AddFile">
+                    <label for="AddFile" style="padding:0px; width:auto; vertical-align:middle; height:100%; margin:0px;">
+                        <span class="btn block-header-btn glyphicon glyphicon-folder-open" aria-hidden="true" style="color:white; font-size:20px; padding:10px">
+                        </span>
+                    </label>
+                </form>
+            </div>
+            <form style="height:auto">
+                <div id="dropZone" class="block-table-text" style="font-size: large">
+                    You can upload files. Hit the button or drag and drop them here
+                </div>
+            </form>
+        </div>
+
+        
+
+
+        <form id="Submit" action="/Manage/AddingTasks">
+            <div class="block" style="width:100%; height:auto; text-align:center">
+                <button type="button" id="SubmitButton" class="block-header-text" style="font-size:large; width:100%">SUBMIT TASK</button>
+            </div>
+        </form>
+
+    </div>
+    <div style="width:82%; display:inline-block; padding:0px; border-left:2px solid gray">
+        <div class="block" style="width:100%; height:auto; text-align:center">
+            <div class="block-header" style="text-align:left">
+                <p class="block-header-text" style="font-size:large; vertical-align:middle" id="TaskName">TASK name</p>
+                <button type="button" class="btn block-header-btn" style="padding:10px;" id="ChangeName">
+                    <span class="glyphicon glyphicon-refresh" aria-hidden="true" style="color:white">
+                    </span>
+                </button>
+            </div>
+            <div>
+                <input id="NameInput" type="text" style="max-width:98%; width:98%; display:inline; margin:2px; align-self:center" placeholder="Enter NAME here">
+            </div>
+        </div>
+
+        <div class="block" style="width:100%; height:auto">
+            <div class="block-header" style="background-color: #7be068;">
+                <p class="block-header-text">MARKDOWN text</p>
+            </div>
+            <div>
+                <textarea id="input" rows="30" placeholder="Input Task text here" class="form-control" style="max-width:inherit; max-height:inherit"></textarea>
+            </div>
+        </div>
+
+        <div class="block" style="width:100%; height:auto; text-align:center">
+            <div class="block-header" style="text-align:left">
+                <p class="block-header-text" style="font-size: large; vertical-align:middle; margin:0px">ANSWERS</p>
+                <button type="button" class="btn block-header-btn" style="height:100%; margin-bottom:0px; margin-top:0px; padding:0.5em;font-size:20px; height:40px; width:40px;vertical-align:middle" id="AddAnswer">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true" style="color:white">
+                    </span>
+                </button>
+            </div>
+            <input id="AnswerInput" type="text" style="max-width:98%; width:98%; display:inline; margin:2px; align-self:center" placeholder="Enter ANSWERS here">
+            <div id="NewAnswers">
+            </div>
+        </div>
+
+        <div class="block" style="width:100%; height:auto">
+            <div class="block-header">
+                <p class="block-header-text">HTML view</p>
+            </div>
+            <div id="output" style="height:630px;width:auto; padding:10px; overflow-y:auto">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src='~/Scripts/jquery.ui.widget.js' type='text/javascript'></script>
+<script src='~/Scripts/jquery.iframe-transport.js' type='text/javascript'></script>
+<script src='~/Scripts/jquery.fileupload.js' type='text/javascript'></script>
+<script src='~/Scripts/jquery.cloudinary.js' type='text/javascript'></script>
+<script src="~/Scripts/showdown.js"></script>
+<script src="~/Scripts/jquery.bsAlerts.min.js"></script>
+<script>
+    $.cloudinary.config({ cloud_name: 'dbq2uhuex', api_key: '779953936715183' });
+
+    var Tags = [];
+    var Answers = [];
+
+    var Category = "C#";
+    var Difficulty = "EASY";
+    var Rating = 0;
+
+    var Name = "";
+
+
+    $("#NameInput")[0].onkeypress = function (event) {
+        if (event.keyCode == 13) {
+            var str = $("#NameInput")[0].value;
+            if (str == "")
+                ShowAlert("You cannot enter empty name.", 'danger');
+            else {
+                $("#TaskName")[0].textContent = 'TASK name : ' + str;
+                $("#NameInput")[0].value = "";
+                Name = str;
+            }
+        }
+    }
+
+    $("#ChangeName")[0].onclick = function () {
+        var str = $("#NameInput")[0].value;
+        if (str == "")
+            ShowAlert("You cannot enter empty name.", 'danger');
+        else {
+            $("#TaskName")[0].textContent = 'TASK name : ' + str;
+            $("#NameInput")[0].value = "";
+            Name = str;
+        }
+    }
+
+    $("#Category")[0].onchange = function () {
+        Category = $("#Category")[0].category.value;
+    }
+
+    $("#Difficulty")[0].onchange = function () {
+        Difficulty = $("#Difficulty")[0].difficulty.value;
+    }
+
+    $("#input")[0].oninput = function () {
+        Convert();
+    }
+
+    function Convert() {
+        input = $("#input")[0];
+        var converter = new showdown.Converter({ parseShet: true });
+        var html = converter.makeHtml(input.value);
+        $("#output")[0].innerHTML = html;
+    }
+
+    function ShowAlert(message, type) {
+        $(document).trigger("add-alerts", [{
+            'message': message,
+            'priority': type
+        }]);
+    }
+
+    $("#TagInput")[0].onkeypress = function (event) {
+        if (event.keyCode == 13) {
+            TagAddTrying();
+        }
+    }
+
+    $("#AddTag")[0].onclick = function () {
+        TagAddTrying();
+    }
+
+
+    function TagAddTrying() {
+        if (Tags.indexOf($("#TagInput")[0].value) == -1) {
+            if ($("#TagInput")[0].value != '') {
+                TagAdd();
+            }
+            else
+                ShowAlert("You cannot enter empty tag.", 'danger');
+        }
+        else {
+            ShowAlert("You cannot enter the same tag.", 'danger');
+        }
+    }
+
+    function TagAdd() {
+        Tags[Tags.length] = $("#TagInput")[0].value;
+        var NewTagElement = document.createElement('div');
+        NewTagElement.classList.add("tag");
+        var NewTagText = '<p style="margin:0px; display:inline-block;">' + $("#TagInput")[0].value + '</p>';
+        var NewTagButton = '<button class="btn btn-tag"><span class = "glyphicon glyphicon-remove-circle" aria-hidden="true" style="color:white"></span></button>';
+        $(NewTagElement).append(NewTagText);
+        $(NewTagElement).append(NewTagButton);
+        $("#NewTags").append(NewTagElement);
+        $("#TagInput")[0].value = "";
+        $("#TagInput")[0].focus();
+        $(".btn-tag").click(function () { TagDelete(this) })
+    }
+
+
+
+
+    $("#AnswerInput")[0].onkeypress = function (event) {
+        if (event.keyCode == 13) {
+            AnswerAddTrying();
+        }
+    }
+
+    $("#AddAnswer")[0].onclick = function () {
+        AnswerAddTrying();
+    }
+
+
+    function AnswerAddTrying() {
+        if (Answers.indexOf($("#AnswerInput")[0].value) == -1) {
+            if ($("#AnswerInput")[0].value != '') {
+                AnswerAdd();
+            }
+            else
+                ShowAlert("You cannot enter empty answer.", 'danger');
+        }
+        else {
+            ShowAlert("You cannot enter the same answer.", 'danger');
+        }
+    }
+
+    function AnswerAdd() {
+        Answers[Answers.length] = $("#AnswerInput")[0].value;
+        var NewAnswerElement = document.createElement('div');
+        NewAnswerElement.classList.add("answer");
+        var NewAnswerText = '<p style="margin:0px; display:inline-block;">' + $("#AnswerInput")[0].value + '</p>';
+        var NewAnswerButton = '<button class="btn btn-answer"><span class = "glyphicon glyphicon-remove-circle" aria-hidden="true" style="color:white"></span></button>';
+        $(NewAnswerElement).append(NewAnswerText);
+        $(NewAnswerElement).append(NewAnswerButton);
+        $("#NewAnswers").append(NewAnswerElement);
+        $("#AnswerInput")[0].value = "";
+        $("#AnswerInput")[0].focus();
+        $(".btn-answer").click(function () { TagDelete(this) })
+    }
+
+
+
+
+    function TagDelete(thisTag) {
+        Tags.forEach(function (item, i, Tags) {
+            if (item == thisTag.parentNode.firstChild.textContent)
+                Tags.splice(i, 1);
+        })
+        thisTag.parentNode.parentNode.removeChild(thisTag.parentNode);
+    }
+    
+    $("#AddFile")[0].onchange = function () {
+        FileAddTrying($("#AddFile")[0].value)
+    }
+
+    function FileAddTrying(str) {
+        if (str != "") {
+            var tmp = "";
+            for (i = str.length - 1; i >= 0; i--) {
+                tmp += str.charAt(i);
+            }
+            var f = tmp.split(".");
+            str = f[0].toLowerCase();
+            if ((str.lastIndexOf("gnp") == -1) && (str.lastIndexOf("pmb") == -1) && (str.lastIndexOf("gpj") == -1) && (str.lastIndexOf("gepj") == -1)) {
+                FileAddFailed("You can only upload images", 'danger');
+            }
+            else {
+                FileAddSucceed();
+            }
+        }
+    }
+
+    function FileAddSucceed() {
+        ShowAlert("Successfully loaded URL", 'success');
+        $("#dropZone")[0].textContent = "Loading..."
+        var str = "";
+        $("#AddFile").unsigned_cloudinary_upload("pbzdjut0",
+        { cloud_name: 'dbq2uhuex', tags: 'browser_uploads' }).bind('cloudinarydone', function () {
+            if (str == "") {
+                str = $("input[name='image_id']")[0].value;
+                $('#input').val($('#input').val() + "![AltText](http://res.cloudinary.com/dbq2uhuex/" + str + ")");
+                Convert();
+                $("#dropZone")[0].textContent = "You can upload files. Hit the button or drag and drop them here";
+                $("#AddFile")[0].files = "";
+                $("#AddFile").value = "";
+            }
+        })
+    }
+
+    function FileAddFailed(message, type) {
+        ShowAlert(message, type);
+        $("#AddFile")[0].files = "";
+        $("#AddFile")[0].value = "";
+    }
+
+    $('#dropZone')[0].ondrop = function (event) {
+        var file = event.dataTransfer.files[0];
+        $("#AddFile")[0].files[0] = file;
+        FileAddTrying(file.name);
+    };
+
+    $("#SubmitButton")[0].onclick = function () {
+        
+        if (Answers.length == 0) {
+            ShowAlert("You cannot create a task with no answer.", 'danger');
+        }
+        else {
+            if (Name == "") {
+                ShowAlert("Name cannot be empty.", 'danger');
+            }
+            else {
+                if ($("#input")[0].value == "") {
+                    ShowAlert("You cannot create a task with no text.", 'danger');
+                }
+                else {
+                    for (var i = 0; i < Tags.length; i++)
+                        $("#Submit")[0].innerHTML += '<input type="hidden" name="Tags" id="Tags" value="' + Tags[i] + '"/>';
+                    for (var i = 0; i < Answers.length; i++)
+                        $("#Submit")[0].innerHTML += '<input type="hidden" name="Answers" id="Answers" value="' + Answers[i] + '"/>';
+                    $("#Submit")[0].innerHTML += '<input type="hidden" name="Name" id="Name" value="' + Name + '"/>';
+                    $("#Submit")[0].innerHTML += '<input type="hidden" name="HTML" id="HTML" value="' + $("#input")[0].value + '"/>';
+                    $("#Submit")[0].innerHTML += '<input type="hidden" name="Category" id="Category" value="' + Category + '"/>';
+                    $("#Submit")[0].innerHTML += '<input type="hidden" name="Difficulty" id="Difficulty" value="' + Difficulty + '"/>';
+                    $("#Submit")[0].innerHTML += '<input type="hidden" name="Rating" id="Rating" value="' + Rating + '"/>';
+                    $("#Submit")[0].submit();
+                }
+            }
+        }
+    }
+
+</script>

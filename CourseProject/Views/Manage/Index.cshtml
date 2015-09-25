@@ -1,0 +1,240 @@
+﻿@model CourseProject.Models.CabinetViewModel
+@{
+    ViewBag.Title = "HOME page";
+    Dictionary<string, string> Colors = new Dictionary<string, string>
+    {
+        {"HARD", "#ff6a00"},
+        {"MEDIUM", "#fcd332"},
+        {"EASY", "#87ff00"}
+    };
+}
+<style>
+    .block {
+        height: auto;
+        width: 48%;
+        min-width: 500px;
+        background-color: lightgray;
+        margin-top: 30px;
+        margin-left: 10px;
+        margin-right: 10px;
+        box-shadow: 30px 30px 25px rgba(4, 4, 4, 0.3);
+        display: inline-block;
+        vertical-align: top;
+        text-align: left;
+    }
+
+    .block-header {
+        height: auto;
+        width: auto;
+        top: 0px;
+        left: 0px;
+    }
+
+    .block-header-text {
+        font-size: 25px;
+        font-family: 'Segoe UI';
+        font-weight: lighter;
+        color: white;
+        padding: 10px;
+        margin-bottom: 0px;
+        background-color: #7984ff;
+        word-break:break-all;
+    }
+
+    .block-table-text {
+        font-size: 25px;
+        font-family: 'Segoe UI';
+        font-weight: lighter;
+        margin: 0px;
+        padding: 0px;
+    }
+
+
+    .glyphicon.glyphicon-one-fine-dot:before {
+        content: "\25cf";
+        font-size: 25px;
+    }
+
+    .navbar-fixed-top {
+        background-color: #7984ff;
+        box-shadow: 0px 10px 25px rgba(4, 4, 4, 0.3);
+    }
+
+    a {
+        color: inherit;
+    }
+
+        a:hover {
+            color: inherit;
+        }
+    .LayoutButton {
+        background-color:#7984ff;
+    }
+    .layout-input {
+    background-color:#5a64d8; 
+}
+</style>
+<div>
+    <div style="width: 15%; height: 100%; display: inline-block; border-right: 2px solid gray; vertical-align: top; margin: 0px">
+
+        <div class="block" style="width:100%; margin:0px; margin-top:30px; min-width:initial">
+            <div id="LatestTHeader" class="block-header" style="text-align:left">
+                <form style="width:100%" action="/Home/FullTable">
+                    <button type="submit" class="block-header-text" style="font-size:large; border:none; width:100%; background-color:#fcd332">VIEW ALL TASKS</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="block" style="width:100%; margin:0px; margin-top:30px; min-width:initial">
+            <div id="LatestTHeader" class="block-header" style="text-align:left">
+                <form style="width:100%" action="/Manage/AddingTasks">
+                    <button type="submit" class="block-header-text" style="font-size:large; border:none; width:100%; background-color:#7be068">CREATE TASK</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="main" class="row" style="text-align: center; width: 80%; display: inline-block; border-left: 2px solid gray; margin: 0px">
+        <div id="Stats" class="block">
+            <div id="AhcivementHeader" class="block-header" style="text-align: left">
+                <p class="block-header-text">STATS</p>
+            </div>
+            <div style="position: relative; top: 0px; left: 0px; width: auto; padding-left: 2px; padding-right: 2px">
+                <table style="width: 100%">
+                    <tr style="background-color: white; border: 3px solid lightgray; color: gray">
+                        <td class="block-table-text" style="padding: 0px; padding: 4px" align="left">
+                            tasks MADE
+                        </td>
+                        <td class="block-table-text" style="padding: 0px; padding: 4px" align="right">
+                            @Model.TaskCount
+                        </td>
+                    </tr>
+                    <tr style="background-color: white; border: 3px solid lightgray; color: gray">
+                        <td class="block-table-text" style="padding: 0px; padding: 4px" align="left">
+                            tasks SOLVED
+                        </td>
+                        <td class="block-table-text" style="padding: 0px; padding: 4px" align="right">
+                            @Model.SolveCount
+                        </td>
+                    </tr>  
+                    <tr style="background-color: white; border: 3px solid lightgray; color: gray">
+                        <td class="block-table-text" style="padding: 0px; padding: 4px" align="left">
+                            COMMENTS wrote
+                        </td>
+                        <td class="block-table-text" style="padding: 0px; padding: 4px" align="right">
+                            @Model.Comments
+                        </td>
+                    </tr>  
+                    <tr style="background-color: white; border: 3px solid lightgray; color: gray">
+                        <td class="block-table-text" style="padding: 0px; padding: 4px" align="left">
+                            average RATING
+                        </td>
+                        <td class="block-table-text" style="padding: 0px; padding: 4px" align="right">
+                            @Model.User.Rating
+                        </td>
+                    </tr>    
+                    <tr style="background-color: white; border: 3px solid lightgray; color: gray">
+                        <td class="block-table-text" style="padding: 0px; padding: 4px" align="left">
+                            current NICKNAME
+                        </td>
+                        <td class="block-table-text" style="padding: 0px; padding: 4px" align="right">
+                            @Model.User.NickName
+                        </td>
+                    </tr> 
+                </table>
+            </div>
+        </div>
+
+        <div id="Ahcivement" class="block">
+            <div id="AhcivementHeader" class="block-header" style="text-align: left">
+                <p class="block-header-text">Ahcivements</p>
+            </div>
+            <div style="position: relative; top: 0px; left: 0px; width: auto; padding-left: 2px; padding-right: 2px">
+                <table style="width: 100%">
+                    <thead style="background-color: lightgray; color: gray">
+                        <tr>
+                            <td class="block-table-text" style="padding: 0px; padding: 4px" align="left">
+                                NAME
+                            </td>
+                            <td class="block-table-text" style="padding: 0px; padding: 4px" align="right">
+                                Description
+                            </td>
+                        </tr>
+                    </thead>
+                    @for(int i = 0; i < 5; i++)
+                    {
+                        if(true /*User[id].AchivementMask[i]=1*/)
+                        {
+                            <tr>
+                                <td class="block-table-text" style="padding: 0px; padding: 4px" align="left">
+                                    Achivement[i].Name
+                                </td>
+                                <td class="block-table-text" style="padding: 0px; padding: 4px" align="right">
+                                    Achivement[i].Description
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+        </div>
+
+        <div id="LatestT" class="block" style="width:100%">
+            <div id="LatestTHeader" class="block-header" style="text-align: left">
+                <p class="block-header-text">LATEST tasks</p>
+            </div>
+            <div style="position: relative; top: 0px; left: 0px; width: auto; padding-left: 2px; padding-right: 2px">
+                <table style="width: 100%">
+                    <thead style="background-color: lightgray; color: gray">
+                        <tr>
+                            <td class="block-table-text" style="padding: 0px; padding: 4px" align="left">
+                                NAME
+                            </td>
+                            <td class="block-table-text" style="padding:0px; padding:4px" align="right">
+                                RATING
+                            </td>
+                            <td class="block-table-text" style="padding: 0px; padding: 4px" align="right">
+                                CATEGORY
+                            </td>
+                            <td class="block-table-text" style="padding: 0px; padding: 4px" align="right">
+                                DIFFICULTY
+                            </td>
+                        </tr>
+                    </thead>
+                    @foreach (var i in Model.Tasks.ToList())
+                    {
+                        float RatingValue = 0.0f;
+                        string Rating = RatingValue.ToString();
+                        if (i.TaskRatingCount > 0)
+                        {
+                            RatingValue = ((float)i.TaskRating / i.TaskRatingCount);
+                            Rating = RatingValue.ToString();
+                            if (Rating.Length > 3)
+                            {
+                                Rating = Rating.Substring(0, 3);
+                            }
+                        }
+                        <tr style="background-color: white; border: 3px solid lightgray; color: @Colors[i.TaskDifficulty]">
+                            <td class="block-table-text" style=" color: @Colors[i.TaskDifficulty]" align="left">
+                                @Html.ActionLink(@i.TaskName, "SolvingTask", "Manage", new { id = i.UserTaskID }, new { @style = "width:100%; height:100%; padding:0px; text-align:left" })
+                            </td>
+                            <td class="block-table-text" style="padding:4px" align="right">
+                                @Rating.ToString()
+                            </td>
+                            <td class="block-table-text" style="padding: 4px" align="right">
+                                @i.TaskCategory
+                            </td>
+                            <td class="block-table-text" style="padding: 4px" align="right">
+                                @i.TaskDifficulty
+                            </td>
+                        </tr>
+
+                    }
+                </table>
+                <div style="text-align: right; padding: 2px">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

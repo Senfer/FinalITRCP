@@ -1,0 +1,173 @@
+﻿@model CourseProject.Models.CabinetViewModel
+
+@{
+    ViewBag.Title = "HOME page";
+    Dictionary<string, string> Colors = new Dictionary<string, string>
+    {
+        {"HARD", "#ff6a00"},
+        {"MEDIUM", "#fcd332"},
+        {"EASY", "#87ff00"}
+    };
+}
+<style>
+    .block {
+        height: auto;
+        width: 45%;
+        min-width: 400px;
+        background-color: lightgray;
+        margin-top: 30px;
+        margin-left: 10px;
+        margin-right: 10px;
+        box-shadow: 30px 30px 25px rgba(4, 4, 4, 0.3);
+        display: inline-block;
+        vertical-align: top;
+        text-align: left;
+    }
+
+    .block-header {
+        height: auto;
+        width: auto;
+        top: 0px;
+        left: 0px;
+    }
+
+    .block-header-text {
+        font-size: 25px;
+        font-family: 'Segoe UI';
+        font-weight: lighter;
+        color: white;
+        padding: 10px;
+        margin-bottom: 2px;
+
+
+        @*background-color: #7be068;
+        background-color: #7984ff;
+        *@ background-color: #fcd332;
+    }
+
+    .block-table-text {
+        font-size: 25px;
+        font-family: 'Segoe UI';
+        font-weight: lighter;
+        margin: 0px;
+        padding: 0px;
+    }
+
+
+    .glyphicon.glyphicon-one-fine-dot:before {
+        content: "\25cf";
+        font-size: 25px;
+    }
+
+    .navbar-fixed-top {
+        background-color: #fcd332;
+        box-shadow: 0px 10px 25px rgba(4, 4, 4, 0.3);
+    }
+
+    a {
+        color: inherit;
+    }
+
+        a:hover {
+            color: inherit;
+        }
+</style>
+<div>
+
+    <div style="width: 15%; height: 100%; display: inline-block; border-right: 2px solid gray; vertical-align: top; margin: 0px">
+        <div id="" class="block" style="width: 100%; margin: 0px; margin-top: 30px; min-width: initial">
+            <div id="LatestTHeader" class="block-header" style="text-align: left"> 
+                <p class="block-header-text" style="font-size: large; vertical-align: middle"> ****  </p>
+            </div>
+        </div>
+        <div id="TagCloud" class="block" style="width: 100%; margin: 0px; margin-top: 30px; height: auto; background-color: white; ; min-width: initial">
+            <div id="TagCloudHeader" class="block-header">
+                <p class="block-header-text" style="font-size: large; vertical-align: middle">TAG CLOUD</p>
+            </div>
+        </div>
+    </div>
+    <div id="main" class="row" style="text-align: center; width: 80%; display: inline-block; border-left: 2px solid gray; margin: 0px">
+        <div id="LatestT" class="block">
+            <div id="LatestTHeader" class="block-header" style="text-align: left">
+                <p class="block-header-text">LATEST tasks</p>
+            </div>
+            <div style="position: relative; top: 0px; left: 0px; width: auto; padding-left: 2px; padding-right: 2px">
+                <table style="width: 100%">
+                    <thead style="background-color: lightgray; color: gray">
+                    <tr>
+                        <td class="block-table-text" style="padding: 0px; padding: 4px" align="left">
+                            NAME
+                        </td>
+                        <td class="block-table-text" style="padding: 0px; padding: 4px" align="right">
+                            CATEGORY
+                        </td>
+                    </tr>
+                    </thead>
+                    @foreach (var i in Model.CabinetModel.Tasks)
+                    {
+                        <tr style="background-color: white; border: 3px solid lightgray; color: @Colors[i.TaskDifficulty]">
+                            <td class="block-table-text" style="width: 60%; color: @Colors[i.TaskDifficulty]" align="left">
+
+                                @Html.ActionLink(@i.TaskName, "SolvingTask", "Manage", new {id = i.UserTaskID}, new {@style = "width:100%; height:100%; padding:0px; text-align:left"})
+
+                            </td>
+                            <td class="block-table-text" style="width: 30%; padding: 4px" align="right">
+                                @i.TaskCategory
+                            </td>
+                            <td style="padding-bottom: 6px; width: 7%; text-align: center">
+                                <span class="glyphicon glyphicon-one-fine-dot" aria-hidden="true" style="margin-bottom: 8px"></span>
+                            </td>
+                        </tr>
+
+                    }
+                </table>
+                <div style="text-align: right; padding: 2px">
+                    @Html.ActionLink("VIEW ALL", "FullTable", new {}, new {@class = "btn block-table-text", @style = "background-color:#fcd332; color:white; font-size:25px; padding:2px", @align = "right"})
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        
+        <div id="Ahcivement" class="block">
+            <div id="AhcivementHeader" class="block-header" style="text-align: left">
+                <p class="block-header-text">Ahcivements</p>
+            </div>
+            <div style="position: relative; top: 0px; left: 0px; width: auto; padding-left: 2px; padding-right: 2px">
+                <table style="width: 100%">
+                    <thead style="background-color: lightgray; color: gray">
+                        <tr>
+                            <td class="block-table-text" style="padding: 0px; padding: 4px" align="left">
+                                NAME
+                            </td>
+                            <td class="block-table-text" style="padding: 0px; padding: 4px" align="right">
+                                Description
+                            </td>
+                        </tr>
+                    </thead>
+                    @for(int i = 0; i < 5; i++)
+                    {
+                        if(true /*User[id].AchivementMask[i]=1*/)
+                        {
+                            <tr>
+                                <td class="block-table-text" style="padding: 0px; padding: 4px" align="left">
+                                    Achivement[i].Name
+                                </td>
+                                <td class="block-table-text" style="padding: 0px; padding: 4px" align="right">
+                                    Achivement[i].Description
+                                </td>
+                            </tr>
+
+                        }
+
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

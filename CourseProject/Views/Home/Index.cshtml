@@ -1,0 +1,304 @@
+﻿@model CourseProject.Models.HomeViewModel
+
+@{
+    ViewBag.Title = "HOME page";
+    Dictionary<string, string> Colors = new Dictionary<string,string>
+    {
+        {"HARD", "#ff6a00"},
+        {"MEDIUM", "#fcd332"},
+        {"EASY", "#87ff00"}
+    };
+}
+
+<style>
+    .block {
+        height: auto;
+        width: 45%;
+        min-width:400px;
+        background-color: lightgray;
+        margin-top: 30px;
+        margin-left: 10px;
+        margin-right: 10px;
+        box-shadow: 30px 30px 25px rgba(4, 4, 4, 0.3);
+        display: inline-block;
+        vertical-align: top;
+        text-align: left;
+    }
+
+    .block-header {
+        height: auto;
+        width: auto;
+        top: 0px;
+        left: 0px;
+    }
+
+    .block-header-text {
+        font-size: 25px;
+        font-family: 'Segoe UI';
+        font-weight: lighter;
+        color:white;
+        padding: 10px;
+        margin-bottom:0px;
+        word-break:break-all;
+
+        @*background-color: #7be068;
+        background-color: #7984ff;
+        *@ background-color: #fcd332;
+    }
+
+    .block-table-text {
+        font-size: 25px;
+        font-family: 'Segoe UI';
+        font-weight: lighter;
+        margin: 0px;
+        padding: 0px;
+    }
+
+
+    .glyphicon.glyphicon-one-fine-dot:before {
+        content: "\25cf";
+        font-size: 25px;
+    }
+
+    .navbar-fixed-top {
+        background-color: #fcd332;
+        box-shadow: 0px 10px 25px rgba(4, 4, 4, 0.3);
+    }
+    
+    .LayoutButton {
+        background-color:#fcd332;
+    }
+    .layout-input {
+    background-color:#e0c000; 
+}
+</style>
+
+<div>
+    <div style="width:15%; height:100%; display:inline-block; border-right:2px solid gray; vertical-align:top; margin:0px">
+        <div class="block" style="width:100%; margin:0px; margin-top:30px; min-width:initial">
+            <div id="LatestTHeader" class="block-header" style="text-align:left">
+                <form style="width:100%" action="/Home/FullTable">
+                    <button type="submit" class="block-header-text" style="font-size:large; border:none; width:100%; background-color:#fcd332">VIEW ALL TASKS</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="block" style="width:100%; margin:0px; margin-top:30px; min-width:initial">
+            <div id="LatestTHeader" class="block-header" style="text-align:left">
+                <form style="width:100%" action="/Manage/AddingTasks">
+                    <button type="submit" class="block-header-text" style="font-size:large; border:none; width:100%; background-color:#7be068">CREATE TASK</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="block" style="width:100%; margin:0px; margin-top:30px; min-width:initial">
+            <div id="LatestTHeader" class="block-header" style="text-align:left">
+                <form style="width:100%" action="/Manage/Index">
+                    <button type="submit" class="block-header-text" style="font-size:large; border:none; width:100%; background-color:#7984ff">TO USER PAGE</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="TagCloud" class="block" style="width:100%;margin:0px; margin-top:30px; height:auto; min-width:initial">
+            <div id="TagCloudHeader" class="block-header">
+                <p class="block-header-text" style="font-size:large; vertical-align:middle">TAG CLOUD</p>
+            </div>
+            <div id="Tags" style="padding: 2px; text-align:center">
+                @foreach (var i in Model.Tags)
+                {
+                    <div class="tag">
+                        <p style="margin:0px; display:inline-block">@i.TagText</p>
+                    </div>
+                }
+                <form id="TagSearch" action="/Home/FullTable">
+                    <input type="hidden" id="Tag" name="Tag">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="main" class="row" style="text-align:center; width:80%; display:inline-block; border-left:2px solid gray; margin:0px">
+        <div id="LatestT" class="block">
+            <div id="LatestTHeader" class="block-header" style="text-align:left">
+                <p class="block-header-text">LATEST tasks</p>
+            </div>
+            <div style="position:relative; top:0px; left:0px; width:auto; padding-left:2px; padding-right:2px">
+                <table style="width:100%">
+                    <thead style="background-color:lightgray; color:gray">
+                        <tr>
+                            <td class="block-table-text" style="padding:0px; padding:4px" align="left">
+                                NAME
+                            </td>
+                            <td class="block-table-text" style="padding:0px; padding:4px" align="right">
+                                CATEGORY
+                            </td>
+                        </tr>
+                    </thead>
+                    @foreach(var i in Model.LatestTasks)
+                    <tr style="background-color:white; border:3px solid lightgray; color:@Colors[i.TaskDifficulty]">
+                        <td class="block-table-text" style="width:60%; color:@Colors[i.TaskDifficulty]" align="left">
+                          
+                           @Html.ActionLink(@i.TaskName, "SolvingTask", "Manage", new { id = i.UserTaskID }, new { @style = "width:100%; height:100%; padding:0px; text-align:left"})
+                        
+                        </td>
+                        <td class="block-table-text" style="width:30%; padding:4px" align="right">
+                           @i.TaskCategory
+                        </td>
+                        <td style="padding-bottom:6px;width:7%;text-align:center">
+                            <span class="glyphicon glyphicon-one-fine-dot" aria-hidden="true" style="margin-bottom:8px"></span>
+                        </td>
+                    </tr>
+
+                    }
+                </table>
+                <div style="text-align:right; padding:2px">
+                    @Html.ActionLink("VIEW ALL", "FullTable", new { }, new { @class = "btn block-table-text", @style = "background-color:#fcd332; color:white; font-size:25px; padding:2px", @align = "right" })
+                </div>
+            </div>
+
+        </div>
+        <div id="RatedT" class="block" >
+            <div id="RatedTHeader" class="block-header" style="text-align:left">
+                <p class="block-header-text">RATED tasks</p>
+            </div>
+            <div style="position:relative; top:0px; left:0px; width:auto; padding-left:2px; padding-right:2px">
+                <table style="width:100%">
+                    <thead style="background-color:lightgray; color:gray">
+                        <tr>
+                            <td class="block-table-text" style="padding:0px; padding:4px" align="left">
+                                NAME
+                            </td>
+                            <td class="block-table-text" style="padding:0px; padding:4px" align="right">
+                                RATING
+                            </td>
+                            <td class="block-table-text" style="padding:0px; padding:4px" align="right">
+                                CATEGORY
+                            </td>
+                        </tr>
+                    </thead>
+                    @foreach (var i in Model.RatedTasks)
+                    {
+                        float RatingValue;
+                        RatingValue = ((float)i.TaskRating / i.TaskRatingCount);
+                        string Rating = RatingValue.ToString();
+                        if (Rating.Length > 3)
+                        {
+                            Rating = Rating.Substring(0, 3);
+                        }
+
+                        <tr style="background-color:white; border:3px solid lightgray; color:@Colors[i.TaskDifficulty]">
+                            <td class="block-table-text" style="padding:0px;padding:4px; width:50%" align="left">
+                               
+                                @Html.ActionLink(@i.TaskName, "SolvingTask", "Manage", new { id = i.UserTaskID },
+                               new { @style = "width:100%; height:100%; text-align:left; word-break:break-all", @class = "block-table-text", })
+                            </td>
+                            <td class="block-table-text" style="padding:4px; width:20%" align="right">
+                                @Rating.ToString()
+                            </td>
+                            <td class="block-table-text" style="padding:4px; width:20%" align="right">
+                                @i.TaskCategory
+                            </td>
+                            <td style="padding-bottom:6px;width:7%;text-align:center">
+                                <span class="glyphicon glyphicon-one-fine-dot" aria-hidden="true" style="margin-bottom:8px"></span>
+                            </td>
+                        </tr>
+                    }
+                </table>
+                <div style="text-align:right; padding:2px">
+                    @Html.ActionLink("VIEW ALL", "FullTable", new { }, new { @class = "btn block-table-text", @style = "background-color:#fcd332; color:white; font-size:25px; padding:2px", @align = "right" })
+                </div>
+            </div>
+        </div>
+       
+        <div id="UnsolvedT" class="block">
+            <div id="UnsolvedTHeader" class="block-header">
+                <p class="block-header-text">UNSOLVED tasks</p>
+            </div>
+            <div style="position:relative; top:0px; left:0px; width:auto; padding-left:2px; padding-right:2px">
+                <table style="width:100%">
+                    <thead style="background-color:lightgray; color:gray">
+                        <tr>
+                            <td class="block-table-text" style="padding:0px; width:60%; padding:4px" align="left">
+                                NAME
+                            </td>
+                            <td class="block-table-text" style="padding:0px; width:30%; padding:4px" align="right">
+                                CATEGORY
+                            </td>
+                        </tr>
+                    </thead>
+                    @foreach (var i in Model.UnsolvedTasks)
+                    {
+                        
+                        <tr style="background-color:white; border:3px solid lightgray;color:@Colors[i.TaskDifficulty]">
+                            <td class="block-table-text" style="padding:0px; width:60%; padding:4px" align="left">
+                                @Html.ActionLink(@i.TaskName, "SolvingTask", "Manage", new { id = i.UserTaskID },
+                               new { @style = "width:100%; height:100%; padding:0px; text-align:left; word-break:break-all", @class = "block-table-text", })
+                            </td>
+                            <td class="block-table-text" style="width:30%; padding:4px" align="right">
+                                @i.TaskCategory
+                            </td>
+                            <td style="padding-bottom:6px;width:7%;text-align:center">
+                                <span class="glyphicon glyphicon-one-fine-dot" aria-hidden="true" style="margin-bottom:8px"></span>
+                            </td>
+                        </tr>
+                    }
+                </table>
+                <div style="text-align:right; padding:2px">
+                    @Html.ActionLink("VIEW ALL", "FullTable",new{},new{ @class="btn block-table-text", @style="background-color:#fcd332; color:white; font-size:25px; padding:2px", @align="right"})
+                </div>
+            </div>
+        </div>
+
+        <div id="RatedU" class="block" >
+            <div id="RatedUHeader" class="block-header" style="text-align:left">
+                <p class="block-header-text">RATED users</p>
+            </div>
+            <div style="position:relative; top:0px; left:0px; width:auto;  padding-left:2px; padding-right:2px">
+                <table style="width:100%">
+                    <thead style="background-color:lightgray; color:gray">
+                        <tr>
+                            <td class="block-table-text" style="padding:0px; width:70%; padding:4px" align="left">
+                                NAME
+                            </td>
+                            <td class="block-table-text" style="padding:0px; width:30%; padding:4px" align="right">
+                                RATING
+                            </td>
+                        </tr>
+                    </thead>
+                    @foreach (var i in Model.RatedUsers)
+                    { 
+                        string Rating = i.Rating.ToString();
+                        if (Rating.Length > 3)
+                        {
+                            Rating = Rating.Substring(0, 3);
+                        }
+                       
+                    <tr style="background-color:white; border:3px solid lightgray">
+
+                        <td class="block-table-text" style="padding:4px; color:gray;" align="left">
+                            
+                            @i.UserName
+                        </td>
+                        <td class="block-table-text" style="color:gray; padding:4px" align="right">
+                            @Rating
+                        </td>
+                    </tr>
+                    }
+                </table>
+                <div style="text-align:right; padding:2px">
+                    <button class="btn block-table-text" style="background-color:#fcd332; color:white; font-size:25px" align="right">VIEW ALL</button>
+                </div>
+            </div>
+        </div>
+
+        @Html.ActionLink("UPDATE ALL", "UpdateSearch", new { }, new { @class = "btn block-table-text", @style = "background-color:#fcd332; color:white; font-size:25px; padding:2px", @align = "right" })
+    </div>
+
+</div>
+
+<script>
+    $(".tag").click(function (event) {
+        $("#Tag")[0].value = this.outerText;
+        $("#TagSearch").submit();
+    });
+</script>

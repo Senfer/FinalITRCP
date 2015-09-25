@@ -1,0 +1,87 @@
+﻿@using CourseProject.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Выполнить вход";
+}
+
+<style>
+    .navbar-fixed-top {
+        background-color: #7984ff;
+        box-shadow: 0px 10px 25px rgba(4, 4, 4, 0.3);
+    }
+
+    .LayoutButton {
+        background-color: #7984ff;
+    }
+
+    .layout-input {
+        background-color: #5a64d8;
+    }
+
+    .block-header {
+        background-color: #7984ff;
+    }
+    .block-table-text {
+        color:gray;
+    }
+    .block-header-text{
+        background-color:#7984ff;
+    }
+</style>
+
+<div style="width:100%; text-align:center">
+    <div class="block" style="width:auto">
+        <div class="block-header" style="text-align: left">
+            <p class="block-header-text">LOGIN</p>
+        </div>
+        <div style="text-align:center; padding:4px" class="block-table-text">
+            <section id="loginForm">
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <p class="block-table-text">Используйте локальную учетную запись для входа.</p>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "block-table-text" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Email, new { @class = "block-table-text" })
+                        <div>
+                            @Html.TextBoxFor(m => m.Email, new { })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "block-table-text" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password, new {  @class = "block-table-text" })
+                        <div>
+                            @Html.PasswordFor(m => m.Password, new { })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "block-table-text" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <div>
+                                @Html.CheckBoxFor(m => m.RememberMe)
+                                @Html.LabelFor(m => m.RememberMe, new { @class = "block-table-text"})
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <input type="submit" value="Выполнить вход" class="btn block-header-text" />
+                        </div>
+                    </div>
+                    <p>
+                        @Html.ActionLink("Регистрация нового пользователя", "Register", new { }, new { @class = "block-table-text" })
+                    </p>
+                    @* Включите, когда будет включено подтверждение учетной записи для функции сброса пароля
+                        <p>
+                            @Html.ActionLink("Забыли пароль?", "ForgotPassword")
+                        </p>*@
+                }
+            </section>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

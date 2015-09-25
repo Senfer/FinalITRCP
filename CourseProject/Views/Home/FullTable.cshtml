@@ -1,0 +1,184 @@
+﻿@model CourseProject.Models.FullTableModel
+
+@{
+    ViewBag.Title = "TASK table";
+    Dictionary<string, string> Colors = new Dictionary<string, string>
+    {
+        {"HARD", "#ff6a00"},
+        {"MEDIUM", "#fcd332"},
+        {"EASY", "#87ff00"}
+    };
+}
+
+<!DOCTYPE html>
+
+
+<style>
+    .block {
+        background-color: lightgray;
+        display: normal;
+    }
+
+    .block-header {
+        
+        background-color: #fcd332;
+    }
+
+    .block-header-text {
+        
+        background-color: #fcd332;
+    }
+
+    .block-table-text {
+
+    }
+
+    .block-header-btn {
+        background-color:#fcd332; 
+        color:white; 
+    }
+
+    .glyphicon.glyphicon-one-fine-dot:before {
+        content: "\25cf";
+        font-size: 35px;
+        margin-bottom: 0px;
+        padding: 0px;
+    }
+
+    .navbar-fixed-top {
+        background-color: #fcd332;
+        box-shadow: 0px 10px 25px rgba(4, 4, 4, 0.3);
+    }
+
+    th:hover {
+        background-color:#b5b5b5;
+    }
+
+    .th-checked {
+        background-color:#b5b5b5;
+    }
+
+    .LayoutButton {
+        background-color:#fcd332;
+    }
+        .layout-input {
+    background-color:#e0c000; 
+}
+</style>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>FullTable</title>
+</head>
+<body>
+    <div> 
+        <div class="block">
+            <div class="block-header" style="text-align:left">
+                <div style="display:inline-block; vertical-align:middle">
+                    <p class="block-header-text" style="margin:0px; vertical-align:middle">ALL TASKS</p>
+                </div>
+                <div style="display:inline-block; vertical-align:top">
+                    <form id="SortForm" action="/Home/FullTable">
+                        <input type="hidden" id="Sort" name="Sort" value="@Model.Sort">
+                        <input type="hidden" id="Reversed" name="Reversed" value="@Model.Reversed">
+                        <input type="hidden" id="Offset" name="Offset" value="0">
+                    </form>
+                </div>
+            </div>
+            <div>
+                <table style="width:100%">
+                    <thead style="color:gray">
+                        <tr style="background-color:lightgray; border:3px solid lightgray">
+                            <th id="Name" class="block-table-text" style="padding:0px; width:50%; padding:4px; border-left:2px solid gray">
+                                NAME
+                            </th>
+                            <th id="Rating" class="block-table-text" style="padding:0px; width:10%;  padding:4px; border-left:2px solid gray">
+                                RATING
+                            </th>
+                            <th id="Category" class="block-table-text" style=" width:25%; padding:4px; border-left:2px solid gray">
+                                THEME
+                            </th>
+                            <th id="Difficulty" class="block-table-text" style=" width:15%; padding:4px; border-left:2px solid gray">
+                                DIFFICULTY
+                            </th>
+                        </tr>
+                    </thead>
+                    @foreach (CourseProject.Models.UserTask i in Model.Tasks)
+                    {
+                        float RatingValue = 0.0f;
+                        string Rating = RatingValue.ToString();
+                        if(i.TaskRatingCount > 0)
+                        {
+                            RatingValue = ((float)i.TaskRating / i.TaskRatingCount);
+                            Rating = RatingValue.ToString();
+                            if (Rating.Length > 3)
+                            {
+                                Rating = Rating.Substring(0, 3);
+                            }
+                        }
+                        <tr style="background-color:white; border:3px solid lightgray; color:@Colors[i.TaskDifficulty]">
+                            <td class="block-table-text" style="padding:0px; width:50%; padding:4px; word-break:break-all">
+                                @Html.ActionLink(@i.TaskName, "SolvingTask", "Manage", new { id = i.UserTaskID }, new { @style = "width:100%; height:100%; padding:0px; text-align:left", @class = "block-table-text", })
+                            </td>
+                            <td class="block-table-text" style="padding:0px; width:10%; padding:4px">
+                                @Rating
+                            </td>
+                            <td class="block-table-text" style="width:25%; padding:4px">
+                                @i.TaskCategory
+                            </td>
+                            <td class="block-table-text" style="width:15%; padding:4px">
+                                @i.TaskDifficulty
+                            </td>
+                        </tr>
+                    }
+                    
+                </table>
+            </div>
+            <div style="text-align:right">
+                @if (Model.Offset > 0)
+                {
+                    @Html.ActionLink("VIEW PREVIOUS", "FullTable", new {Sort = @Model.Sort, Reversed = @Model.Reversed, Offset = @Model.Offset-1 }, new
+           {
+               @class = "btn block-header-text",
+               @style = "color:white",
+               @align = "right"
+           })
+                }
+                @if (Model.ActiveCount > (Model.Offset+1) * 10)
+                {
+                    @Html.ActionLink("VIEW NEXT", "FullTable", new { Sort = @Model.Sort, Reversed = @Model.Reversed, Offset = @Model.Offset + 1 }, new
+               {
+                   @class = "btn block-header-text",
+                   @style = "color:white",
+                   @align = "right"
+               })
+                }
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+<script>
+    $(document).ready(function () {
+        $("#@Model.Sort")[0].classList.add("th-checked");
+        if("@Model.Reversed" == "True")
+            $("#@Model.Sort")[0].innerHTML += '<span class = "glyphicon glyphicon glyphicon-chevron-up" aria-hidden="true"></span>'
+        else
+            $("#@Model.Sort")[0].innerHTML += '<span class = "glyphicon glyphicon glyphicon-chevron-down" aria-hidden="true"></span>'
+    });
+
+    $("th").click(function () {
+        $("#Sort")[0].value = this.id;
+        if (this.classList.contains("th-checked")) {
+            $("#Reversed")[0].value = !$("#Reversed")[0].value;
+        }
+        else{
+            $("#Reversed")[0].value = false;
+        }
+        $("#SortForm").submit();
+    });
+
+
+</script>

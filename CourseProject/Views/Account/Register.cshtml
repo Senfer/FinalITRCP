@@ -1,0 +1,81 @@
+﻿@model CourseProject.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Регистрация";
+}
+<style>
+    .navbar-fixed-top {
+        background-color: #7984ff;
+        box-shadow: 0px 10px 25px rgba(4, 4, 4, 0.3);
+    }
+
+    .LayoutButton {
+        background-color: #7984ff;
+    }
+
+    .layout-input {
+        background-color: #5a64d8;
+    }
+
+    .block-header {
+        background-color: #7984ff;
+    }
+
+    .block-table-text {
+        color: gray;
+    }
+
+    .block-header-text {
+        background-color: #7984ff;
+    }
+</style>
+
+
+<div style="width:100%; text-align:center">
+    <div class="block" style="width:auto">
+        <div class="block-header" style="text-align: left">
+            <p class="block-header-text">REGISTER</p>
+        </div>
+        <div style="text-align:center; padding:4px">
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <p class="block-table-text">Создайте новую учетную запись.</p>
+                <hr />
+                @Html.ValidationSummary("", new { @class = "block-table-text" })
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new { @class = "block-table-text" })
+                    <div>
+                        @Html.TextBoxFor(m => m.Email, new { @class = "block-table-text" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "block-table-text" })
+                    <div>
+                        @Html.PasswordFor(m => m.Password, new { @class = "block-table-text" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "block-table-text" })
+                    <div>
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "block-table-text" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.NicknameVar, new { @class = "block-table-text" })
+                    <div>
+                        @Html.TextBoxFor(m => m.NicknameVar, new { @class = "block-table-text" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div>
+                        <input type="submit" class="btn block-header-text" value="Регистрация" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

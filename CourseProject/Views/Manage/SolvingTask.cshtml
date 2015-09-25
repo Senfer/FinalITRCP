@@ -1,0 +1,357 @@
+﻿@model CourseProject.Models.SolveTaskModel
+@{
+    Dictionary<string, string> Colors = new Dictionary<string, string>
+    {
+        {"WRONG", "#ff6a00"},
+        {"RIGHT", "#87ff00"}
+    };
+    int iterator = 0;
+}
+
+<!DOCTYPE html>
+
+<style>
+    .block {
+        height: auto;
+        width:auto;
+        background-color: lightgray;
+        margin-top: 30px;
+        margin-left: 0px;
+        margin-right: 0px;
+        box-shadow: 20px 20px 25px rgba(4, 4, 4, 0.3);
+        display: inline-block;
+        vertical-align: top;
+        text-align: left;
+        word-break: break-all;
+    }
+
+    .block-header {
+        height: auto;
+        width: auto;
+        top: 0px;
+        left: 0px;
+        text-align: left;
+        background-color: #7be068;
+    }
+
+    .block-header-text {
+        font-size: 25px;
+        font-family: 'Segoe UI';
+        font-weight: lighter;
+        color: white;
+        padding: 9px;
+        background-color: #7be068;
+        display: inline-block;
+        word-break:break-all;
+        margin:0px
+    }
+
+    .block-header-btn {
+        font-size: 25px;
+        display: inline-block;
+        padding-top: 15px;
+        margin: 0px;
+        right: 0px;
+        background-color: #7be068;
+        color: white;
+        vertical-align: middle;
+        border-radius: 0px;
+        border: 0px;
+        border-left: 2px solid lightgray;
+        border-right: 2px solid lightgray;
+    }
+
+    .block-table-text {
+        font-size: larger;
+        font-family: 'Segoe UI';
+        font-weight: lighter;
+        color: gray;
+        margin: 0px;
+        padding: 5px;
+    }
+
+    .glyphicon.glyphicon-one-fine-dot:before {
+        content: "\25cf";
+        font-size: 35px;
+        margin-bottom: 0px;
+        padding: 0px;
+    }
+
+    .tag {
+        padding:4px;
+        margin:3px;    
+        height:auto;
+        background-color:#688ffa;
+        color:white;
+        display:inline-block;
+    }
+
+        .tag:hover {
+            background-color:#526db7;
+        }
+
+    .navbar-fixed-top {
+        background-color: #7be068;
+        box-shadow: 0px 10px 25px rgba(4, 4, 4, 0.3);
+    }
+
+    .LayoutButton {
+        background-color:#7be068;
+    }
+
+    .layout-input {
+    background-color:#70bd62; 
+}
+</style>
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SolvingTask</title>
+</head>
+<body>
+
+    <div style="display:inline-block; width:15%; vertical-align:top; border-right:2px solid gray; border-bottom: 2px solid gray">
+
+        <div class="block" style="width:100%">
+            <div class="block-header">
+                <p class="block-header-text" style="font-size:large">
+                    AUTHOR
+                </p>
+            </div>
+            <div style="text-align:center">
+                <p class="block-table-text" style="width:100%; color:white; background-color:gray">@Model.UserName</p>
+            </div>
+        </div>
+
+        <div class="block" style="width:100%">
+            <div class="block-header">
+                <p class="block-header-text" style="font-size:large">
+                    CATEGORY
+                </p>
+            </div>
+            <div style="text-align:center">
+                <p class="block-table-text" style="width:100%; color:white; background-color:gray">@Model.Task.TaskCategory</p>
+            </div>
+        </div>
+
+
+        <div class="block" style="width:100%">
+            <div class="block-header">
+                <p class="block-header-text" style="font-size:large">
+                    DIFFICULTY
+                </p>
+            </div>
+            <div style="text-align:center">
+                <p class="block-table-text" style="width:100%; color:white; background-color:gray">@Model.Task.TaskDifficulty</p>
+            </div>
+        </div>
+
+        <div class="block" style="width:100%">
+            <div class="block-header">
+                <p class="block-header-text" style="font-size:large">
+                    SOLVE COUNT
+                </p>
+            </div>
+            <div style="text-align:center">
+                <p class="block-table-text" style="width:100%; color:white; background-color:gray">@Model.Task.SolveCount</p>
+            </div>
+        </div>
+
+
+        <div class="block" style="width:100%">
+            <div class="block-header">
+                <p class="block-header-text" style="font-size:large">
+                    TAGS
+                </p>
+            </div>
+            <div id="Tags" style="padding: 2px; text-align:center">
+                @foreach (var i in Model.Tags)
+                {
+                    <div class="tag">
+                        <p style="margin:0px; display:inline-block">@i.TagText</p>
+                    </div>
+                }
+                <form id="TagSearch" action="/Home/FullTable">
+                    <input type="hidden" id="Tag" name="Tag">
+                </form>
+            </div>
+        </div>
+
+        <div class="block" style="width:100%">
+            <div class="block-header">
+
+                <p class="block-header-text" style="font-size:large">
+                    RATING
+                </p>
+
+            </div>
+            <form action="/Manage/Vote" id="RatingForm">
+                <div style="padding: 2px; text-align:center; font-size:25px; color:#7be068">
+                    @if (Model.Rating == 0)
+                    {
+                        <input type="hidden" class="rating" name="Rating" id="Rating" style="color:#7be068" />
+                    }
+                    else
+                    {
+                        <input type="hidden" name="Rating" id="Rating" class="rating" value="@Model.Rating" />
+                    }
+                    <input type="hidden" id="id" name="id" value="@Model.Task.UserTaskID" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div style="display:inline-block; width:82%; border-left:2px solid gray; border-bottom: 2px solid gray">
+        <div class="block" style="width:100%">
+            <div class="block-header" style="word-break:normal">
+                <p class="block-header-text">@Model.Task.TaskName</p>
+                @if (Model.Solved == -2)
+                {
+                    <div style="display:inline-block; vertical-align:top">
+                        <form id="ChangeTask" action="/Manage/ChangeTask">
+                            <button type="submit" class="btn block-header-btn" style="height:100%; margin-bottom:0px; margin-top:0px; padding:10px; vertical-align:top;  background-color:#8fff00" id="ChangeTaskBtn">
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="color:white">
+                                </span>
+                            </button>
+                            <input type="hidden" id="id" name="id" value="@Model.Task.UserTaskID">
+                        </form>
+                    </div>
+                    <div style="display:inline-block; vertical-align:top">
+                        <form id="DeleteTask" action="/Manage/DeleteTask">
+                            <button type="submit" class="btn block-header-btn" style="height:100%; margin-bottom:0px; margin-top:0px; padding:10px; vertical-align:top;  background-color:#ff6a00" id="DeleteTaskBtn">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true" style="color:white">
+                                </span>
+                            </button>
+                            <input type="hidden" id="id" name="id" value="@Model.Task.UserTaskID">
+                        </form>
+                    </div>
+                }
+            </div>
+            <div id="output" style="position:relative; width:auto; padding:10px; overflow:auto">
+                @Model.Task.TaskText
+            </div>
+
+            @if (Model.Solved > -2 && Model.Solved < 1)
+            {
+                <div class="block-header">
+                    <div style="display:inline-block; border-right:2px solid lightgray">
+                        <p class="block-header-text">YOUR answer</p>
+                    </div>
+                    <div style="display:inline-block; width:70%; height:100%; vertical-align:top">
+                        <form class="form-inline" type="post" action="/Manage/SolvingTask">
+                            <div class="form-group">
+                                <input type="text" placeholder="ENTER your ANSWER" id="Answer" name="Answer" />
+
+                                <button type="submit" class="btn block-header-btn" style="padding-bottom:10px; padding-top:10px" id="AnswerButton">
+                                    <p class="block-header-text" style="margin:0px; padding:0px">ANSWER</p>
+                                </button>
+                            </div>
+                            <input type="hidden" id="id" name="id" value="@Model.Task.UserTaskID" />
+                        </form>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                if (Model.Solved == -2)
+                {
+                    <div class="block-header">
+                        <div style="display:inline-block">
+                            <p class="block-header-text">YOU CREATED THIS TASK</p>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    if (Model.Solved == 1)
+                    {
+                        <div class="block-header" style="word-break:normal; background-color:#8fff00">
+                            <p class="block-header-text" style="background-color:#8fff00">TASK SOLVED</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="block-header">
+                            <div style="display:inline-block; border-right:2px solid lightgray">
+                                <p class="block-header-text">YOU ALREADY SOLVED THIS</p>
+                            </div>
+                        </div>
+                    }
+
+                }
+            }
+
+        </div>
+
+
+
+        @if (Model.Solved == 0)
+        {
+            <div class="block" style="width:100%">
+                <div class="block-header" style="word-break:normal; background-color: #ff6a00">
+                    <p class="block-header-text" style="background-color: #ff6a00">ANSWER IS WRONG</p>
+                </div>
+            </div>
+        }
+
+        <div class="block" style="width:100%">
+            <div class="block-header">
+                <p class="block-header-text" style="display:inline-block">NEW COMMENT</p>
+                <button type="button" class="btn block-header-btn" style="height:100%; margin-bottom:0px; margin-top:0px; padding:10px; vertical-align:top" id="AddComment">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true" style="color:white">
+                    </span>
+                </button>
+            </div>
+            <form action="/Manage/AddComment" id="CommentSubmit">
+                <div id="output" style="position:relative; width:auto; padding:10px">
+                    <textarea id="Comment" name="Comment" form="CommentSubmit" rows="5" class="form-control" style="width:100%; max-width:100%" placeholder="enter COMMENTS there"></textarea>
+                </div>
+                <input type="hidden" id="id" name="id" value="@Model.Task.UserTaskID">
+            </form>
+            <div class="block-header">
+                <p class="block-header-text" style="display:inline-block">COMMENTS</p>
+            </div>
+            <div style="padding:5px">
+                @foreach (var i in Model.Comments)
+                {
+                    iterator++;
+                    <div style="margin-top:10px; width:100%; background-color:white">
+                        <p class="block-table-text"># @iterator | @Model.Nicknames[i.UserID]</p>
+                        <p class="block-table-text">@i.CommentText</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+<link href="~/Content/bootstrap-rating.css" media="all" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/bootstrap-rating.js"></script>
+<script src="~/Scripts/showdown.js"></script>
+<script>
+    $(document).ready(function () {
+        var str = $("#output")[0].textContent;
+        var converter = new showdown.Converter();
+        str = str.trim();
+        var html = converter.makeHtml(str);
+        $("#output")[0].innerHTML = html;
+        $("#Rating").rating();
+       
+    });
+
+
+    $("#AddComment")[0].onclick = function () {
+        if ($("#Comment")[0].value != "")
+            $("#CommentSubmit")[0].submit();
+    }
+
+    $("#Rating")[0].onchange = function () {
+        $("#RatingForm")[0].submit();
+    }
+
+   
+</script>
